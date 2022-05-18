@@ -32,10 +32,12 @@ public class ArrayList<E> implements List<E> {
         indexValidation(index);
         checkAndResizeIfNecessary();
 
-        E lastElement = this.get(elementsCount - 1);
-        for (int i = elementsCount - 1; i < index; i--) {
-
+        E lastElement = this.get(this.elementsCount - 1);
+        for (int i = this.elementsCount - 1; i > index; i--) {
+            this.elements[i] = this.elements[i - 1];
         }
+        this.elements[index] = element;
+        this.add(lastElement);
 
         return true;
     }
@@ -49,37 +51,74 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E set(int index, E element) {
-        return null;
+        indexValidation(index);
+
+        E removedElement = (E) this.elements[index];
+
+        this.elements[index] = element;
+
+        return removedElement;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        indexValidation(index);
+        E removedElement = (E) this.elements[index];
+
+        for (int i = index; i < elementsCount; i++) {
+            this.elements[i] = this.elements[i + 1];
+        }
+        this.elementsCount--;
+
+        if (this.elements.length > this.elementsCount && this.elementsCount <= this.elements.length / 4) {
+            this.elements = shrink();
+        }
+
+
+        return removedElement;
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.elementsCount;
     }
 
     @Override
     public int indexOf(E element) {
-        return 0;
+        for (int i = 0; i < elementsCount; i++) {
+            if (this.elements[i].equals(element)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override
     public boolean contains(E element) {
-        return false;
+
+        return this.indexOf(element) >= 0;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.elementsCount == 0;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return this.index < elementsCount;
+            }
+
+            @Override
+            public E next() {
+                return get(this.index++);
+            }
+        };
     }
 
     private Object[] grow() {
@@ -87,8 +126,13 @@ public class ArrayList<E> implements List<E> {
         return Arrays.copyOf(this.elements, this.elements.length * 2);
     }
 
+    private Object[] shrink() {
+
+        return Arrays.copyOf(this.elements, this.elements.length / 2);
+    }
+
     private void indexValidation(int index) {
-        if (index < 0 || index >= this.elements.length) {
+        if (index < 0 || index >= this.elementsCount) {
             throw new IndexOutOfBoundsException
                     (String.format("Index %d is out of bounds for size %d%n", index, this.elements.length));
         }
@@ -98,5 +142,9 @@ public class ArrayList<E> implements List<E> {
         if (this.elementsCount == this.elements.length) {
             this.elements = grow();
         }
+    }
+
+    public Object[] getElements() {
+        return elements;
     }
 }
