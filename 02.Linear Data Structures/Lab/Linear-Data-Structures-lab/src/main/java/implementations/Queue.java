@@ -86,7 +86,7 @@ public class Queue<E> implements AbstractQueue<E> {
             private Node<E> current = first;
             @Override
             public boolean hasNext() {
-                return current.next != null;
+                return current != null;
             }
 
             @Override

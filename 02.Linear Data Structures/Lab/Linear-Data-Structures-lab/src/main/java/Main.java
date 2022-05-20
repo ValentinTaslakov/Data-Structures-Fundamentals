@@ -1,22 +1,43 @@
 import implementations.ArrayList;
 import implementations.Queue;
+import implementations.SinglyLinkedList;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws NoSuchFieldException {
 
-        Queue<Integer> test = new Queue<>();
+        SinglyLinkedList<Integer> test = new SinglyLinkedList<>();
 
-        test.offer(5);
-        test.offer(10);
-//        test.offer(15);
-//        test.offer(20);
+        test.addFirst(5);
+        test.addFirst(10);
+        test.addFirst(15);
 
+        test.addLast(7);
+
+        for (Integer integer : test) {
+            System.out.print(integer + " ");
+        }
         System.out.println();
+        System.out.println("First element is: " + test.getFirst());
+        System.out.println("Last element is: " + test.getLast());
 
-        test.poll();
-        test.poll();
+        System.out.println(test.size());
+//        try {
+//
+//            System.out.println( test.removeFirst());
+//            System.out.println( test.removeFirst());
+//            System.out.println( test.removeFirst());
+//            System.out.println( test.removeFirst());
+//            System.out.println( test.removeFirst());
+//        }catch (IllegalStateException ex){
+//            System.out.println(ex.getMessage());
+//        }
+
+
+
+
 
 
     }
